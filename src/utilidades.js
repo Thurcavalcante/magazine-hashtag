@@ -89,4 +89,4 @@ export function lerLocalStorage(chave) {
   return JSON.parse(localStorage.getItem(chave));
 }
 
-// Proximo commit: Implementando Filtro Interativo
+// Proximo commit: Inteligência dos Filtros
