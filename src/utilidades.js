@@ -77,7 +77,7 @@ export const catalogo = [
     nome: "Colete Acolchoado Leve",
     preco: 229,
     imagem: "product-10.jpg",
-    feminino: true,
+    feminino: false,
   },
 ];
 
@@ -88,3 +88,5 @@ export function salvarLocalStorage(chave, informacao) {
 export function lerLocalStorage(chave) {
   return JSON.parse(localStorage.getItem(chave));
 }
+
+// Proximo commit: Implementando Filtro Interativo
