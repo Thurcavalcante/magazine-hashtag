@@ -80,3 +80,11 @@ export const catalogo = [
     feminino: true,
   },
 ];
+
+export function salvarLocalStorage(chave, informacao) {
+  localStorage.setItem(chave, JSON.stringify(informacao)); //JSON é uma forma mais segura para armazenar dados no naveg
+}
+
+export function lerLocalStorage(chave) {
+  return JSON.parse(localStorage.getItem(chave));
+}

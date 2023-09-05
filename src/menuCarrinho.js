@@ -1,6 +1,6 @@
-import { catalogo } from "./utilidades";
+import { catalogo, lerLocalStorage, salvarLocalStorage } from "./utilidades";
 
-const idsProdutoCArrinhoComQuantidade = {};
+const idsProdutoCArrinhoComQuantidade = lerLocalStorage("carrinho") ?? {};
 
 function abrirCarrinho() {
   document.getElementById("carrinho").classList.add("right-[0px]");
@@ -22,11 +22,15 @@ export function inicializarCarrinho() {
 
 function removerDoCarrinho(idProduto) {
   delete idsProdutoCArrinhoComQuantidade[idProduto];
+  salvarLocalStorage("carrinho", idsProdutoCArrinhoComQuantidade);
+  atualizarPrecoCarrinho(); 
   renderizarProdutosCarrinho();
 }
 
 function incrementarQuantidadeProduto(idProduto) {
   idsProdutoCArrinhoComQuantidade[idProduto]++;
+  salvarLocalStorage("carrinho", idsProdutoCArrinhoComQuantidade);
+  atualizarPrecoCarrinho();
   atualizarInformacaoQuantidade(idProduto)
 }
 
@@ -36,6 +40,8 @@ function decrementarQuantidadeProduto(idProduto) {
     return;
   }
   idsProdutoCArrinhoComQuantidade[idProduto]--;
+  salvarLocalStorage("carrinho", idsProdutoCArrinhoComQuantidade);
+  atualizarPrecoCarrinho();
   atualizarInformacaoQuantidade(idProduto)
 }
 
@@ -76,9 +82,9 @@ function desenharProdutoNoCarrinho(idProduto) {
       <p class="text-green-700 text-lg">$${produto.preco}</p>
     </div>
     <div class="flex text-slate-950 items-end absolute bottom-0 right-2 text-lg">
-      <button>${produto.id}</button>
+      <button id=""decrementar-produto-${produto.id}>-</button>
       <p id="quantidade-${produto.id}" class="ml-2">${idsProdutoCArrinhoComQuantidade[produto.id]}</p>
-      <button class="ml-2">${produto.id}</button>
+      <button id="incrementar-produto-${produto.id}" class="ml-2">+</button>
     </div>`;
   
   elementoArticle.innerHTML = cartaoProdutoCarrinho;
@@ -89,9 +95,10 @@ function desenharProdutoNoCarrinho(idProduto) {
   document.getElementById(`remover-item-${produto.id}`).addEventListener('click', () => removerDoCarrinho(produto.id));
 }
 
-function renderizarProdutosCarrinho() { //renderizar = desenhar
+export function renderizarProdutosCarrinho() { //renderizar = desenhar
   const containerProdutosCarrinho = document.getElementById("produtos-carrinho");
   containerProdutosCarrinho.innerHTML = "";
+
   for (const idProduto in idsProdutoCArrinhoComQuantidade) {
     desenharProdutoNoCarrinho(idProduto);
   }
@@ -103,5 +110,16 @@ export function adicionarAoCarrinho(idProduto) {
     return;
   }
   idsProdutoCArrinhoComQuantidade[idProduto] = 1;
+  salvarLocalStorage("carrinho", idsProdutoCArrinhoComQuantidade);
   desenharProdutoNoCarrinho(idProduto);
+  atualizarPrecoCarrinho();
+}
+
+export function atualizarPrecoCarrinho() {
+  const precoCarrinho = document.getElementById("preco-total");
+  let precoTotalCarrinho = 0;
+  for (const idProdutoNoCarrinho in idsProdutoCArrinhoComQuantidade) {
+    precoTotalCarrinho += catalogo.find(p => p.id === idProdutoNoCarrinho).preco * idsProdutoCArrinhoComQuantidade[idProdutoNoCarrinho];
+  }
+  precoCarrinho.innerText = `Total: $${precoTotalCarrinho}`;
 }
