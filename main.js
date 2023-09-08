@@ -1,9 +1,14 @@
 import { renderizarCatalogo } from "./src/cartaoProduto";
 import { inicializarFiltros } from "./src/filtrosCatalogo";
-import { atualizarPrecoCarrinho, inicializarCarrinho, renderizarProdutosCarrinho } from "./src/menuCarrinho";
+import {
+  atualizarPrecoCarrinho,
+  inicializarCarrinho,
+  renderizarProdutosCarrinho,
+} from "./src/menuCarrinho";
 
-renderizarCatalogo();      
+renderizarCatalogo();
 inicializarCarrinho();
-inicializarFiltros();
 renderizarProdutosCarrinho();
 atualizarPrecoCarrinho();
+inicializarFiltros();
+inicializarFiltros;
